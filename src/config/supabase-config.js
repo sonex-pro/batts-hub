@@ -1,14 +1,16 @@
 // src/config/supabase-config.js
 // This file loads Supabase credentials securely without exposing them in version control
 
-// Development fallback (do not use real credentials here)
+// Development fallback with empty values that will fail safely instead of with DNS errors
 const devFallback = {
-  supabaseUrl: 'https://project.supabase.co', // Placeholder
-  supabaseAnonKey: 'public-anon-key-placeholder' // Placeholder
+  supabaseUrl: '', // Empty fallback rather than invalid URL
+  supabaseAnonKey: '' // Empty fallback
 };
 
 // Use a function to load the configuration asynchronously
 let configPromise = null;
+let configLoaded = false;
+let loadedConfig = devFallback;
 
 const loadConfig = async () => {
   // Only load once
@@ -19,10 +21,12 @@ const loadConfig = async () => {
     if (typeof window !== 'undefined' && 
         window.SUPABASE_URL && 
         window.SUPABASE_ANON_KEY) {
-      resolve({
+      loadedConfig = {
         supabaseUrl: window.SUPABASE_URL,
         supabaseAnonKey: window.SUPABASE_ANON_KEY
-      });
+      };
+      configLoaded = true;
+      resolve(loadedConfig);
       return;
     }
     
@@ -33,7 +37,9 @@ const loadConfig = async () => {
       const localConfig = module.default;
       
       if (localConfig && localConfig.supabaseUrl && localConfig.supabaseAnonKey) {
-        resolve(localConfig);
+        loadedConfig = localConfig;
+        configLoaded = true;
+        resolve(loadedConfig);
         return;
       }
     } catch (error) {
@@ -41,21 +47,19 @@ const loadConfig = async () => {
     }
     
     // Use development fallback if nothing else is available
-    console.warn('WARNING: Using development fallback credentials. DO NOT use in production!');
+    console.error('ERROR: No valid Supabase configuration found! Application will not work correctly.');
+    console.error('Please create a src/config/supabase-config.local.js file based on the template.');
     resolve(devFallback);
   });
   
   return configPromise;
 };
 
-// For synchronous initialization, we need to provide a fallback
-// This will be replaced once the async loading completes
-let config = devFallback;
+// Export the getter function to ensure we always have the latest config
+const getConfig = () => loadedConfig;
 
 // Start loading the real config immediately
-loadConfig().then(loadedConfig => {
-  config = loadedConfig;
-});
+loadConfig();
 
-export default config;
-export { loadConfig }; // Export the loader for components that need to wait for config
+export default getConfig;
+export { loadConfig, configLoaded }; // Export the loader for components that need to wait for config
