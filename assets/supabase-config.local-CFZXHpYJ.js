@@ -1,1 +1,0 @@
-const I={supabaseUrl:"https://qvpjvwugpwodksfxzmen.supabase.co",supabaseAnonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2cGp2d3VncHdvZGtzZnh6bWVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NTIxMTAsImV4cCI6MjA2NTMyODExMH0.tYiWm1F4pzE6ynAxrnwUhAw4uag1IH5Atyj8zXKnI-4"};export{I as default};
