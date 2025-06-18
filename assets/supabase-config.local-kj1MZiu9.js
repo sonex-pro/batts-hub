@@ -1,1 +1,1 @@
-const s=export{s as default};
+const s={supabaseUrl:"https://cdusthxfjgfbtomjrtxn.supabase.co",supabaseAnonKey:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkdXN0aHhmamdmYnRvbWpydHhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyNDM3MzEsImV4cCI6MjA2NTgxOTczMX0.aYs_QTwS5SdhiCrtRhZ5yaz5EmoQ6ey_x1ppZwFkqtw"};export{s as default};
